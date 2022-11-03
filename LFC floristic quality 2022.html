@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>LFC 2022 floristic quality analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+<script src="LFC floristic quality 2022_files/libs/clipboard/clipboard.min.js"></script>
+<script src="LFC floristic quality 2022_files/libs/quarto-html/quarto.js"></script>
+<script src="LFC floristic quality 2022_files/libs/quarto-html/popper.min.js"></script>
+<script src="LFC floristic quality 2022_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="LFC floristic quality 2022_files/libs/quarto-html/anchor.min.js"></script>
+<link href="LFC floristic quality 2022_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="LFC floristic quality 2022_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="LFC floristic quality 2022_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="LFC floristic quality 2022_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="LFC floristic quality 2022_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">LFC 2022 floristic quality analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="species-inventory" class="level2">
+<h2 class="anchored" data-anchor-id="species-inventory">Species inventory</h2>
+<p>Over 100 species were observed, in total. The first few are shown below, while the full inventory can be found in the file <em>species.csv</em>. Disclaimer: while this data frame include 134 rows (species), some of these are duplicates due to spelling errors.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">species_name</th>
+<th style="text-align: left;">C</th>
+<th style="text-align: right;">total_quadrats_found</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">acer rubrum</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">acer saccharum</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">acer saccharum</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ageratina altissima</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">agrimonia gryposepala</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">agrimonia sp.</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">allium cernuum</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">amorpha fruticosa</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">amphicarpaea bracteata</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">anemone quinquefolia</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The breakdown by teams was relatively uniform.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  team      n
+  &lt;fct&gt; &lt;int&gt;
+1 1        84
+2 2        94
+3 3        72</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="LFC-floristic-quality-2022_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Chi-squared test for given probabilities
+
+data:  c(84, 94, 72)
+X-squared = 2.912, df = 2, p-value = 0.2332</code></pre>
+</div>
+</div>
+<p>The p-value of .23 indicates that differences between teams could eaasily be attributed to random chance.</p>
+</section>
+<section id="transect-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="transect-comparison">Transect comparison</h2>
+<p>The wetland showed both the greatest richness (total number of species observed) and highest native mean-C.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 4
+  transect species_count mean_c  sd_c
+  &lt;chr&gt;            &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt;
+1 wetland             46   4.91  3.22
+2 prairie             44   4     2.78
+3 ravine              40   4.44  2.24
+4 savanna             38   3.39  2.21</code></pre>
+</div>
+</div>
+<p>The simplicity of this table of numerical summaries is both beautiful and dangerous. A complicated data set like this just can’t be reduced to 12-number summary without significant information loss. A picture is a step in the right direction.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="LFC-floristic-quality-2022_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="co-occurrence-of-native-species." class="level2">
+<h2 class="anchored" data-anchor-id="co-occurrence-of-native-species.">Co-occurrence of native species.</h2>
+<p>Perhaps we can learn something about individual plant species by looking at the C-values of the species they’re co-located with, that is, the ones nearby them. For each species, I computed the average C-value of native plants found in quadrats where they were located. The first few rows are shown below. The entire data set is contained in the <em>colocation.csv</em> file.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 4%">
+<col style="width: 27%">
+<col style="width: 19%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">species_name</th>
+<th style="text-align: right;">C</th>
+<th style="text-align: right;">cospecies_average_c</th>
+<th style="text-align: right;">cooccurrences</th>
+<th style="text-align: right;">discrepancy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">acer rubrum</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">4.6</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">acer saccharum</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.6</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">-1.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">acer saccharum</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5.1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">-0.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ageratina altissima</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4.1</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">-1.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">agrimonia gryposepala</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3.9</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">-1.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">agrimonia sp.</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">allium cernuum</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">2.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">amorpha fruticosa</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">amphicarpaea bracteata</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">anemone quinquefolia</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">4.6</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">2.4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>As you’d expect, there is a moderately strong correlation (0.54) between a plant’s C-value and the average C-values of those species found nearby.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="LFC-floristic-quality-2022_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="species-profiles" class="level2">
+<h2 class="anchored" data-anchor-id="species-profiles">Species profiles</h2>
+<p>For each species, a profile of co-located C-values can be constructed. The calico aster (<em>symphyotrichum lateriflorum</em>, C=4), for instance, breaks down as follows:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="LFC-floristic-quality-2022_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The profile of the Canada mayflower (<em>maianthemum canadense</em>, C=7) is somewhat different:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="LFC-floristic-quality-2022_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Our sample is very small and specific to our hyper-local environment. Can this idea be scaled up?</p>
+</section>
+<section id="the-chicago-database" class="level2">
+<h2 class="anchored" data-anchor-id="the-chicago-database">The Chicago database</h2>
+<p>The website <a href="www.universalfqa.org">www.universalfqa.org</a> includes hundreds of public floristic quality assessments in standardized format. I downloaded all of the ones that used the most up-to-date database for the Chicagoland area and have begun a co-occurrence analysis. There are over 2.4 million co-occurrences in this set; the full data set is not included, but a summary (<em>chicago_cooccurrences_summary.csv</em>) is. The first few rows of this are:</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 6%">
+<col style="width: 4%">
+<col style="width: 7%">
+<col style="width: 6%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 10%">
+<col style="width: 5%">
+<col style="width: 6%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">target_species</th>
+<th style="text-align: right;">target_species_c</th>
+<th style="text-align: right;">cospecies_n</th>
+<th style="text-align: right;">cospecies_native_n</th>
+<th style="text-align: right;">cospecies_mean_c</th>
+<th style="text-align: right;">cospecies_native_mean_c</th>
+<th style="text-align: right;">cospecies_std_dev_c</th>
+<th style="text-align: right;">cospecies_native_std_dev_c</th>
+<th style="text-align: right;">percent_native</th>
+<th style="text-align: right;">percent_nonnative</th>
+<th style="text-align: right;">percent_native_low_c</th>
+<th style="text-align: right;">percent_native_med_c</th>
+<th style="text-align: right;">percent_native_high_c</th>
+<th style="text-align: right;">discrepancy_c</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Abutilon theophrasti</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3058</td>
+<td style="text-align: right;">2051</td>
+<td style="text-align: right;">2.404186</td>
+<td style="text-align: right;">3.584593</td>
+<td style="text-align: right;">2.817443</td>
+<td style="text-align: right;">2.757524</td>
+<td style="text-align: right;">0.6706998</td>
+<td style="text-align: right;">0.3293002</td>
+<td style="text-align: right;">0.6572923</td>
+<td style="text-align: right;">0.2622629</td>
+<td style="text-align: right;">0.0804447</td>
+<td style="text-align: right;">-3.5845929</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Acalypha gracilens</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">168</td>
+<td style="text-align: right;">108</td>
+<td style="text-align: right;">2.154762</td>
+<td style="text-align: right;">3.351852</td>
+<td style="text-align: right;">2.497875</td>
+<td style="text-align: right;">2.384980</td>
+<td style="text-align: right;">0.6428571</td>
+<td style="text-align: right;">0.3571429</td>
+<td style="text-align: right;">0.6785714</td>
+<td style="text-align: right;">0.2916667</td>
+<td style="text-align: right;">0.0297619</td>
+<td style="text-align: right;">0.6481481</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Acalypha rhomboidea</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3152</td>
+<td style="text-align: right;">2067</td>
+<td style="text-align: right;">2.367068</td>
+<td style="text-align: right;">3.609579</td>
+<td style="text-align: right;">2.887519</td>
+<td style="text-align: right;">2.868692</td>
+<td style="text-align: right;">0.6557741</td>
+<td style="text-align: right;">0.3442259</td>
+<td style="text-align: right;">0.6719543</td>
+<td style="text-align: right;">0.2350888</td>
+<td style="text-align: right;">0.0929569</td>
+<td style="text-align: right;">-3.6095791</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Acaulon muticum</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">202</td>
+<td style="text-align: right;">132</td>
+<td style="text-align: right;">2.504951</td>
+<td style="text-align: right;">3.833333</td>
+<td style="text-align: right;">2.369473</td>
+<td style="text-align: right;">1.866403</td>
+<td style="text-align: right;">0.6534653</td>
+<td style="text-align: right;">0.3465347</td>
+<td style="text-align: right;">0.6336634</td>
+<td style="text-align: right;">0.3465347</td>
+<td style="text-align: right;">0.0198020</td>
+<td style="text-align: right;">-1.8333333</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Acer campestre</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">2.952381</td>
+<td style="text-align: right;">4.769231</td>
+<td style="text-align: right;">3.513918</td>
+<td style="text-align: right;">3.345491</td>
+<td style="text-align: right;">0.6190476</td>
+<td style="text-align: right;">0.3809524</td>
+<td style="text-align: right;">0.6190476</td>
+<td style="text-align: right;">0.1904762</td>
+<td style="text-align: right;">0.1904762</td>
+<td style="text-align: right;">-4.7692308</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Acer ginnala</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">618</td>
+<td style="text-align: right;">471</td>
+<td style="text-align: right;">3.718447</td>
+<td style="text-align: right;">4.878981</td>
+<td style="text-align: right;">3.301934</td>
+<td style="text-align: right;">2.939135</td>
+<td style="text-align: right;">0.7621359</td>
+<td style="text-align: right;">0.2378641</td>
+<td style="text-align: right;">0.4822006</td>
+<td style="text-align: right;">0.3365696</td>
+<td style="text-align: right;">0.1812298</td>
+<td style="text-align: right;">-4.8789809</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Acer negundo</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6286</td>
+<td style="text-align: right;">4194</td>
+<td style="text-align: right;">2.388641</td>
+<td style="text-align: right;">3.580114</td>
+<td style="text-align: right;">2.741169</td>
+<td style="text-align: right;">2.645056</td>
+<td style="text-align: right;">0.6671969</td>
+<td style="text-align: right;">0.3328031</td>
+<td style="text-align: right;">0.6559020</td>
+<td style="text-align: right;">0.2737830</td>
+<td style="text-align: right;">0.0703150</td>
+<td style="text-align: right;">-3.5801144</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Acer nigrum</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">379</td>
+<td style="text-align: right;">311</td>
+<td style="text-align: right;">4.224274</td>
+<td style="text-align: right;">5.147910</td>
+<td style="text-align: right;">3.185589</td>
+<td style="text-align: right;">2.757509</td>
+<td style="text-align: right;">0.8205805</td>
+<td style="text-align: right;">0.1794195</td>
+<td style="text-align: right;">0.3931398</td>
+<td style="text-align: right;">0.3957784</td>
+<td style="text-align: right;">0.2110818</td>
+<td style="text-align: right;">-0.1479100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Acer platanoides</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1912</td>
+<td style="text-align: right;">1337</td>
+<td style="text-align: right;">2.702406</td>
+<td style="text-align: right;">3.864622</td>
+<td style="text-align: right;">2.687809</td>
+<td style="text-align: right;">2.416339</td>
+<td style="text-align: right;">0.6992678</td>
+<td style="text-align: right;">0.3007322</td>
+<td style="text-align: right;">0.5998954</td>
+<td style="text-align: right;">0.3399582</td>
+<td style="text-align: right;">0.0601464</td>
+<td style="text-align: right;">-3.8646223</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Acer pseudoplatanus</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">465</td>
+<td style="text-align: right;">331</td>
+<td style="text-align: right;">2.937634</td>
+<td style="text-align: right;">4.126888</td>
+<td style="text-align: right;">2.448254</td>
+<td style="text-align: right;">1.872181</td>
+<td style="text-align: right;">0.7118280</td>
+<td style="text-align: right;">0.2881720</td>
+<td style="text-align: right;">0.5591398</td>
+<td style="text-align: right;">0.4107527</td>
+<td style="text-align: right;">0.0301075</td>
+<td style="text-align: right;">-4.1268882</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The species profile for the calico aster is:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="LFC-floristic-quality-2022_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>A few sample questions that a complete co-occurrence analysis might address:</p>
+<ul>
+<li><p>Some species show high discrepancy, co-occuring predominately with species of very different C-values. How might such species be re-classified?</p></li>
+<li><p>Are some species more informative than others?</p></li>
+<li><p>Would it be useful to assign non-native plants C-values on the basis of co-occurring C’s?</p></li>
+<li><p>Suppose we used an algorithm to assign new C values on the basis of co-occurrence. What might the output look like? How would those values fare when applied to existing floristic quality assessments?</p></li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
