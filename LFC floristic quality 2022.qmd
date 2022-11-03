@@ -1,0 +1,252 @@
+---
+title: "LFC 2022 floristic quality analysis"
+format: html
+editor: visual
+---
+
+```{r preliminaries, include = FALSE}
+library(tidyverse)
+library(fqar)
+library(here)
+library(readxl)
+library(broom)
+library(knitr)
+theme_set(theme_minimal())
+
+file1 <- here("lfc_fqa_team1.xlsx")
+file2 <- here("lfc_fqa_team2.xlsx")
+file3 <- here("lfc_fqa_team3.xlsx")
+
+team1_raw <- read_excel(file1)
+team2_raw <- read_excel(file2)
+team3_raw <- read_excel(file3)
+
+es224 <- rbind(team1_raw, team2_raw, team3_raw)
+es224 <- mutate(es224,
+                team = as.factor(team),
+                plot_number = as.factor(plot_number),
+                species_name = tolower(species_name),
+                transect = tolower(transect))
+species <- es224 |>
+  arrange(species_name) |>
+  select(species_name, C) |>
+  group_by(species_name, C) |>
+  summarize(total_quadrats_found = n())
+```
+
+## Species inventory
+
+Over 100 species were observed, in total. The first few are shown below, while the full inventory can be found in the file *species.csv*. Disclaimer: while this data frame include 134 rows (species), some of these are duplicates due to spelling errors.
+
+```{r, echo = FALSE}
+kable(species[1:10, ])
+```
+
+The breakdown by teams was relatively uniform.
+
+```{r, echo = FALSE}
+es224 |> count(team)
+ggplot(es224, aes(x = team,
+                  fill = team)) +
+  geom_bar() +
+  theme(legend.position = "none") +
+  scale_fill_brewer(palette = "Dark2")
+chisq.test(c(84, 94, 72))
+```
+
+The p-value of .23 indicates that differences between teams could eaasily be attributed to random chance.
+
+## Transect comparison
+
+The wetland showed both the greatest richness (total number of species observed) and highest native mean-C.
+
+```{r, echo = FALSE, warning = FALSE}
+es224_native <- mutate(es224, C = as.numeric(C))
+
+es224_native |>
+  group_by(transect) |>
+  summarize(species_count = length(unique(species_name)),
+            mean_c = mean(C, na.rm = TRUE),
+            sd_c = sd(C, na.rm = TRUE)
+            ) |>
+  arrange(-species_count)
+```
+
+The simplicity of this table of numerical summaries is both beautiful and dangerous. A complicated data set like this just can't be reduced to 12-number summary without significant information loss. A picture is a step in the right direction.
+
+```{r, echo = FALSE, warning = FALSE}
+ggplot(es224_native, aes(x = transect,
+                         y = C,
+                         col = transect)) +
+  geom_boxplot() +
+  geom_jitter(width = .2) +
+  theme(legend.position = "none") +
+  scale_color_brewer(palette = "Dark2")
+```
+
+## Co-occurrence of native species.
+
+Perhaps we can learn something about individual plant species by looking at the C-values of the species they're co-located with, that is, the ones nearby them. For each species, I computed the average C-value of native plants found in quadrats where they were located. The first few rows are shown below. The entire data set is contained in the *colocation.csv* file.
+
+```{r, include = FALSE}
+es224_working <- mutate(es224,
+                        nativity = case_when(C == "nn" ~ "non-native",
+                                              TRUE ~ "native"),
+                        C = as.numeric(C))
+
+es224_working <- es224_working |>
+  select(transect:plot_number, species_name:C, nativity) |>
+  group_by(transect, plot_number) |>
+  mutate(local_average_c = mean(C, na.rm = TRUE),
+         local_n = sum(!is.na(C))) |>
+  ungroup()
+
+cospecies_summary <- es224_working |>
+  group_by(species_name, C) |>
+  summarize(cospecies_average_c = round(sum(local_average_c * local_n) / sum(local_n), 1),
+            cooccurrences = sum(local_n)) |>
+  ungroup() |>
+  mutate(discrepancy = C - cospecies_average_c)
+```
+
+```{r, echo = FALSE}
+kable(cospecies_summary[1:10, ])
+```
+
+As you'd expect, there is a moderately strong correlation (0.54) between a plant's C-value and the average C-values of those species found nearby.
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+ggplot(cospecies_summary, aes(x = C, y = cospecies_average_c)) +
+  geom_jitter(width = .2) +
+  geom_smooth(method = "lm",
+              se = FALSE)
+
+```
+
+## Species profiles
+
+For each species, a profile of co-located C-values can be constructed. The calico aster (*symphyotrichum lateriflorum*, C=4), for instance, breaks down as follows:
+
+```{r, include = FALSE}
+species <- "symphyotrichum lateriflorum"
+
+es224_species_quadrats <- filter(es224_working, species_name == species)
+target_c <- es224_species_quadrats$C[1] # just looks at first entry. Could be an issue if a species has multiple C values
+
+es224_co <- filter(es224, 0==1) # initialize df with colnames but no rows
+for (i in 1:nrow(es224_species_quadrats)){
+  temp <- es224 |>
+    filter(transect == es224_species_quadrats$transect[i],
+           team == es224_species_quadrats$team[i],
+           plot_number == es224_species_quadrats$plot_number[i])
+  es224_co <- rbind(es224_co, temp)
+}
+
+es224_cospecies <- es224_co |>
+  mutate(target_species = species,
+         target_species_c = target_c,
+         C = as.numeric(C)) |>
+  select(target_species,
+         target_species_c,
+         cospecies = species_name,
+         cospecies_c = C,
+         transect,
+         team,
+         plot_number) |>
+  filter(cospecies != target_species)
+```
+
+```{r, echo = FALSE, warning = FALSE}
+ggplot(es224_cospecies, aes(x = cospecies_c)) +
+  geom_bar() +
+  scale_x_continuous(breaks = seq(from = 0, to = 11, by = 2)) +
+  labs(x = "Co-occurring species C values",
+       y = "Frequency",
+       title = "Calico aster native co-occurrence profile") +
+  theme_minimal()
+```
+
+The profile of the Canada mayflower (*maianthemum canadense*, C=7) is somewhat different:
+
+```{r, include = FALSE}
+species <- "maianthemum canadense"
+
+es224_species_quadrats <- filter(es224_working, species_name == species)
+target_c <- es224_species_quadrats$C[1] # just looks at first entry. Could be an issue if a species has multiple C values
+
+es224_co <- filter(es224, 0==1) # initialize df with colnames but no rows
+for (i in 1:nrow(es224_species_quadrats)){
+  temp <- es224 |>
+    filter(transect == es224_species_quadrats$transect[i],
+           team == es224_species_quadrats$team[i],
+           plot_number == es224_species_quadrats$plot_number[i])
+  es224_co <- rbind(es224_co, temp)
+}
+
+es224_cospecies <- es224_co |>
+  mutate(target_species = species,
+         target_species_c = target_c,
+         C = as.numeric(C)) |>
+  select(target_species,
+         target_species_c,
+         cospecies = species_name,
+         cospecies_c = C,
+         transect,
+         team,
+         plot_number) |>
+  filter(cospecies != target_species)
+```
+
+```{r, echo = FALSE, warning = FALSE}
+ggplot(es224_cospecies, aes(x = cospecies_c)) +
+  geom_bar() +
+  scale_x_continuous(breaks = seq(from = 0, to = 11, by = 2)) +
+  labs(x = "Co-occurring species C values",
+       y = "Frequency",
+       title = "Canada mayflower native co-occurrence profile") +
+  theme_minimal()
+```
+
+Our sample is very small and specific to our hyper-local environment. Can this idea be scaled up?
+
+## The Chicago database
+
+The website [www.universalfqa.org](www.universalfqa.org) includes hundreds of public floristic quality assessments in standardized format. I downloaded all of the ones that used the most up-to-date database for the Chicagoland area and have begun a co-occurrence analysis. There are over 2.4 million co-occurrences in this set; the full data set is not included, but a summary (*chicago_cooccurrences_summary.csv*) is. The first few rows of this are:
+
+```{r, include = FALSE}
+file <- here("chicago_cooccurrences_summary.csv")
+chicago_sum <- read_csv(file)
+```
+
+```{r, echo = FALSE}
+kable(chicago_sum[1:10, ])
+```
+
+The species profile for the calico aster is:
+
+```{r, include = FALSE}
+file <- here("aster_cooccurrence.csv")
+aster_cooccur <- read_csv(file) |> 
+  filter(cospecies_nativity == "native")
+```
+
+```{r, echo = FALSE, message = FALSE}
+ggplot(aster_cooccur, aes(x = cospecies_c)) +
+  geom_bar() +
+  scale_x_continuous(breaks = seq(from = 0, to = 11, by = 2)) +
+  labs(x = "Co-occurring species C values",
+       y = "Frequency",
+       title = "Calico aster native co-occurrence profile") +
+  theme_minimal()
+
+```
+
+A few sample questions that a complete co-occurrence analysis might address:
+
+-   Some species show high discrepancy, co-occuring predominately with species of very different C-values. How might such species be re-classified?
+
+-   Are some species more informative than others?
+
+-   Would it be useful to assign non-native plants C-values on the basis of co-occurring C's?
+
+-   Suppose we used an algorithm to assign new C values on the basis of co-occurrence. What might the output look like? How would those values fare when applied to existing floristic quality assessments?
